@@ -3,7 +3,7 @@ import streamlit as st
 # Define the equations
 equations = {
     1: "v = v_0 + at",
-    2: "x = x_0 + v_0t + /frac{1}{2} at^2",
+    2: "x = x_0 + v_0t + \frac{1}{2} at^2",
     3: "v^2 = v_0^2 + 2 * a * Δx"
 }
 
