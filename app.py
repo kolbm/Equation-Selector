@@ -4,7 +4,7 @@ import streamlit as st
 equations = {
     1: "v = v_0 + at",
     2: "x = x_0 + v_0t + 0.5 at^2",
-    3: "v^2 = v_0^2 + 2 * a * Δx"
+    3: "v^2 = v_0^2 + 2aΔx"
 }
 
 # Display the title of the app
