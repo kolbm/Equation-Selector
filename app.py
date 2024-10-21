@@ -9,9 +9,6 @@ eq1 = sp.Eq(v, v0 + a * t)  # v = v0 + a * t (previously Equation 2)
 eq2 = sp.Eq(x, x0 + v0 * t + 0.5 * a * t**2)  # x = x0 + v0 * t + 0.5 * a * t^2 (previously Equation 1)
 eq3 = sp.Eq(v**2, v0**2 + 2 * a * (x - x0))  # v^2 = v0^2 + 2a * Δx
 
-# Display the title of the app
-st.title("Mr. Kolb's Kinematic Equation Solver")
-
 #Display the title logo
 st.image("https://github.com/kolbm/Equation-Selector/blob/main/eqlogo.jpg?raw=true")
 
