@@ -10,7 +10,10 @@ eq2 = sp.Eq(x, x0 + v0 * t + 0.5 * a * t**2)  # x = x0 + v0 * t + 0.5 * a * t^2 
 eq3 = sp.Eq(v**2, v0**2 + 2 * a * (x - x0))  # v^2 = v0^2 + 2a * Δx
 
 # Display the title of the app
-st.title("Kinematic Equation Solver")
+st.title("Mr. Kolb's Kinematic Equation Solver")
+
+#Display the title logo
+st.image("https://github.com/kolbm/projectile-motion/blob/main/logo-projectile.jpg?raw=true")
 
 # Ask for known values with checkboxes
 st.subheader("Select the known variables:")
