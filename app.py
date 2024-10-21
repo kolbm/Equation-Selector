@@ -2,9 +2,9 @@ import streamlit as st
 
 # Define the equations
 equations = {
-    1: "v = v0 + a * t",
-    2: "x = x0 + v0 * t + 0.5 * a * t^2",
-    3: "v^2 = v0^2 + 2 * a * Δx"
+    1: "v = v_0 + a * t",
+    2: "x = x_0 + v_0 * t + 0.5 * a * t^2",
+    3: "v^2 = v_0^2 + 2 * a * Δx"
 }
 
 # Display the title of the app
@@ -29,14 +29,14 @@ equation_needed = None
 # Case 1: Solving for displacement
 if solving_for == "Displacement (x)":
     if v0_known and t_known and a_known:
-        equation_needed = 1
+        equation_needed = 2
     else:
         st.warning("You need initial velocity, time, and acceleration to use Equation 1.")
 
 # Case 2: Solving for final velocity
 elif solving_for == "Final velocity (v)":
     if v0_known and a_known and t_known:
-        equation_needed = 2
+        equation_needed = 1
     elif v0_known and a_known and x_known:
         equation_needed = 3
     else:
@@ -45,7 +45,7 @@ elif solving_for == "Final velocity (v)":
 # Case 3: Solving for time
 elif solving_for == "Time (t)":
     if v0_known and a_known and v_known:
-        equation_needed = 2
+        equation_needed = 1
     else:
         st.warning("You need initial velocity, final velocity, and acceleration to solve for time.")
 
