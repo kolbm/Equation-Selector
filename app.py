@@ -13,7 +13,7 @@ eq3 = sp.Eq(v**2, v0**2 + 2 * a * (x - x0))  # v^2 = v0^2 + 2a * Δx
 st.title("Mr. Kolb's Kinematic Equation Solver")
 
 #Display the title logo
-st.image("https://github.com/kolbm/projectile-motion/blob/main/logo-projectile.jpg?raw=true")
+st.image("https://github.com/kolbm/Equation-Selector/blob/main/eqlogo.jpg?raw=true")
 
 # Ask for known values with checkboxes
 st.subheader("Select the known variables:")
