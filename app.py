@@ -4,81 +4,77 @@ import sympy as sp
 # Define the symbols for the equations
 x, x0, v0, v, a, t = sp.symbols('x x0 v0 v a t')
 
-# Define the kinematic equations with Equation 1 and 2 swapped
-eq1 = sp.Eq(v, v0 + a * t)  # v = v0 + a * t (previously Equation 2)
-eq2 = sp.Eq(x, x0 + v0 * t + 0.5 * a * t**2)  # x = x0 + v0 * t + 0.5 * a * t^2 (previously Equation 1)
+# Define the kinematic equations
+eq1 = sp.Eq(v, v0 + a * t)  # v = v0 + a * t
+eq2 = sp.Eq(x, x0 + v0 * t + 0.5 * a * t**2)  # x = x0 + v0 * t + 0.5 * a * t^2
 eq3 = sp.Eq(v**2, v0**2 + 2 * a * (x - x0))  # v^2 = v0^2 + 2a * Δx
 
-#Display the title logo
+# Display the title logo
 st.image("https://github.com/kolbm/Equation-Selector/blob/main/eqlogo.jpg?raw=true")
 
-# Ask for known values with checkboxes
-st.subheader("Select the known variables:")
+# Function to solve equations based on knowns and unknowns
+def solve_equation(knowns, solving_for):
+    try:
+        if solving_for == 'Displacement (x)':
+            if knowns['v0'] and knowns['t'] and knowns['a']:
+                return sp.solve(eq2, x)[0]
+            elif knowns['v0'] and knowns['v'] and knowns['a']:
+                return sp.solve(eq3, x)[0]
+        elif solving_for == 'Initial velocity (v0)':
+            if knowns['v'] and knowns['t'] and knowns['a']:
+                return sp.solve(eq1, v0)[0]
+            elif knowns['v'] and knowns['x'] and knowns['a']:
+                return sp.solve(eq3, v0)[0]
+        elif solving_for == 'Final velocity (v)':
+            if knowns['v0'] and knowns['t'] and knowns['a']:
+                return sp.solve(eq1, v)[0]
+            elif knowns['v0'] and knowns['x'] and knowns['a']:
+                return sp.solve(eq3, v)[0]
+        elif solving_for == 'Acceleration (a)':
+            if knowns['v0'] and knowns['t'] and knowns['v']:
+                return sp.solve(eq1, a)[0]
+            elif knowns['v0'] and knowns['x'] and knowns['v']:
+                return sp.solve(eq3, a)[0]
+        elif solving_for == 'Time (t)':
+            if knowns['v0'] and knowns['a'] and knowns['v']:
+                return sp.solve(eq1, t)[0]
+            elif knowns['v0'] and knowns['x'] and knowns['a']:
+                t_solutions = sp.solve(eq2, t)
+                return t_solutions  # Return both solutions for now
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+    return None
 
-x_known = st.checkbox("Displacement (x)")
-v0_known = st.checkbox("Initial velocity (v0)")
-v_known = st.checkbox("Final velocity (v)")
-a_known = st.checkbox("Acceleration (a)")
-t_known = st.checkbox("Time (t)")
+# Ask for numerical inputs
+st.subheader("Input known variables:")
+x_input = st.number_input("Displacement (x)", value=0.0)
+v0_input = st.number_input("Initial velocity (v0)", value=0.0)
+v_input = st.number_input("Final velocity (v)", value=0.0)
+a_input = st.number_input("Acceleration (a)", value=0.0)
+t_input = st.number_input("Time (t)", value=0.0)
+
+# Known variables dictionary (change checkboxes to numerical input)
+knowns = {
+    'x': st.checkbox("Displacement (x)", value=x_input != 0),
+    'v0': st.checkbox("Initial velocity (v0)", value=v0_input != 0),
+    'v': st.checkbox("Final velocity (v)", value=v_input != 0),
+    'a': st.checkbox("Acceleration (a)", value=a_input != 0),
+    't': st.checkbox("Time (t)", value=t_input != 0)
+}
 
 # Ask what the student is solving for
 st.subheader("What are you solving for?")
 solving_for = st.radio("Choose the unknown:", ["Displacement (x)", "Initial velocity (v0)", "Final velocity (v)", "Acceleration (a)", "Time (t)"])
 
-# Store known variables in a dictionary
-knowns = {
-    'x': x_known,
-    'v0': v0_known,
-    'v': v_known,
-    'a': a_known,
-    't': t_known
-}
-
-# Rearrange and solve for the unknown based on the input
-solution = None
-
-# Check what variables the user is solving for and adjust accordingly
-if solving_for == "Displacement (x)":
-    if v0_known and t_known and a_known:
-        solution = sp.solve(eq2, x)[0]
-    elif v0_known and v_known and a_known:
-        solution = sp.solve(eq3, x)[0]
-    else:
-        st.warning("You need at least initial velocity, time, and acceleration, or initial velocity, final velocity, and acceleration to solve for displacement.")
-
-elif solving_for == "Initial velocity (v0)":
-    if v_known and t_known and a_known:
-        solution = sp.solve(eq1, v0)[0]
-    elif v_known and x_known and a_known:
-        solution = sp.solve(eq3, v0)[0]
-    else:
-        st.warning("You need at least final velocity, time, and acceleration, or final velocity, displacement, and acceleration to solve for initial velocity.")
-
-elif solving_for == "Final velocity (v)":
-    if v0_known and t_known and a_known:
-        solution = sp.solve(eq1, v)[0]
-    elif v0_known and x_known and a_known:
-        solution = sp.solve(eq3, v)[0]
-    else:
-        st.warning("You need initial velocity, time, and acceleration, or initial velocity, displacement, and acceleration to solve for final velocity.")
-
-elif solving_for == "Acceleration (a)":
-    if v0_known and t_known and v_known:
-        solution = sp.solve(eq1, a)[0]
-    elif v0_known and x_known and v_known:
-        solution = sp.solve(eq3, a)[0]
-    else:
-        st.warning("You need initial velocity, time, and final velocity, or initial velocity, displacement, and final velocity to solve for acceleration.")
-
-elif solving_for == "Time (t)":
-    if v0_known and a_known and v_known:
-        solution = sp.solve(eq1, t)[0]
-    elif v0_known and x_known and a_known:
-        solution = sp.solve(eq2, t)
-    else:
-        st.warning("You need at least initial velocity, final velocity, and acceleration, or initial velocity, displacement, and acceleration to solve for time.")
+# Call the solving function
+solution = solve_equation(knowns, solving_for)
 
 # Display the solution if available
 if solution:
     st.success(f"The rearranged equation to solve for {solving_for} is:")
-    st.latex(sp.latex(solution))
+    if isinstance(solution, list):
+        st.latex(f"t_1 = {sp.latex(solution[0])}, t_2 = {sp.latex(solution[1])}")
+    else:
+        st.latex(sp.latex(solution))
+else:
+    st.warning("Please provide enough known values to solve the equation.")
