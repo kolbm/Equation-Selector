@@ -37,34 +37,52 @@ solving_for = st.selectbox("Choose the unknown:", ["Displacement (x)", "Initial 
 if st.button("Show Suggested Equation"):
     # Determine which equation arrangement to suggest based on known values
     st.subheader("Suggested Equation:")
+    equation_label = ""  # Variable to store the equation label for display
+
     if solving_for == 'Displacement (x)':
         if knowns['v0'] and knowns['t'] and knowns['a']:
             st.latex(sp.latex(eq2))
+            equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
         elif knowns['v0'] and knowns['v'] and knowns['a']:
             st.latex(sp.latex(sp.solve(eq3, x)[0]))
+            equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
+    
     elif solving_for == 'Initial velocity (v0)':
         if knowns['v'] and knowns['t'] and knowns['a']:
-            st.latex(sp.latex(eq1))
+            st.latex(sp.latex(sp.solve(eq1, v0)[0]))
+            equation_label = "Equation 1: \( v = v_0 + a t \)"
         elif knowns['v'] and knowns['x'] and knowns['a']:
             st.latex(sp.latex(sp.solve(eq3, v0)[0]))
+            equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
+    
     elif solving_for == 'Final velocity (v)':
         if knowns['v0'] and knowns['t'] and knowns['a']:
             st.latex(sp.latex(eq1))
+            equation_label = "Equation 1: \( v = v_0 + a t \)"
         elif knowns['v0'] and knowns['x'] and knowns['a']:
             st.latex(sp.latex(sp.solve(eq3, v)[0]))
+            equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
+    
     elif solving_for == 'Acceleration (a)':
         if knowns['v0'] and knowns['t'] and knowns['v']:
-            st.latex(sp.latex(eq1))
+            st.latex(sp.latex(sp.solve(eq1, a)[0]))
+            equation_label = "Equation 1: \( v = v_0 + a t \)"
         elif knowns['v0'] and knowns['x'] and knowns['v']:
             st.latex(sp.latex(sp.solve(eq3, a)[0]))
+            equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
+    
     elif solving_for == 'Time (t)':
         if knowns['v0'] and knowns['a'] and knowns['v']:
-            st.latex(sp.latex(eq1))
+            st.latex(sp.latex(sp.solve(eq1, t)[0]))
+            equation_label = "Equation 1: \( v = v_0 + a t \)"
         elif knowns['v0'] and knowns['x'] and knowns['a']:
             st.latex(sp.latex(sp.solve(eq2, t)))
+            equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
 
-    # Provide info if no equation is displayed due to missing inputs
-    if not any(knowns.values()):
+    # Display the equation label
+    if equation_label:
+        st.caption(equation_label)
+    else:
         st.warning("Please select at least two known values to suggest an equation.")
 else:
     st.info("Click the button to show the suggested equation based on your inputs.")
