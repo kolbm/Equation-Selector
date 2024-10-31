@@ -33,14 +33,14 @@ knowns = {
 st.subheader("What are you solving for?")
 solving_for = st.selectbox("Choose the unknown:", ["Displacement (x)", "Initial velocity (v0)", "Final velocity (v)", "Acceleration (a)", "Time (t)"])
 
-# Function to display large equations
+# Function to display large equations in proper format
 def display_large_equation(equation):
-    st.markdown(f"<h2 style='text-align: center;'>{sp.latex(equation)}</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>Suggested Equation:</h2>", unsafe_allow_html=True)
+    st.latex(sp.latex(equation))
 
 # Button to trigger the equation selection
 if st.button("Show Suggested Equation"):
     # Determine which equation arrangement to suggest based on known values
-    st.subheader("Suggested Equation:")
     if solving_for == 'Displacement (x)':
         if knowns['v0'] and knowns['t'] and knowns['a']:
             display_large_equation(eq2)
