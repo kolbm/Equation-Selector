@@ -79,9 +79,9 @@ if st.button("Show Suggested Equation"):
             st.latex(sp.latex(sp.solve(eq2, t)))
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
 
-    # Display the equation label
+    # Display the equation label centered below the output
     if equation_label:
-        st.caption(equation_label)
+        st.markdown(f"<div style='text-align: center;'>{equation_label}</div>", unsafe_allow_html=True)
     else:
         st.warning("Please select at least two known values to suggest an equation.")
 else:
