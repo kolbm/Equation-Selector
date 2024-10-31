@@ -107,13 +107,13 @@ if st.button("Show Suggested Equation"):
         if knowns['v0'] and knowns['t'] and knowns['v'] and condition != "Constant velocity (a = 0)":
             a_solution = sp.solve(eq1, a)
             solved_expression = a_solution[0] if isinstance(a_solution, list) else a_solution
-            st.latex(sp.latex(sp.simplify(solved_expression)))
+            st.latex(sp.latex(sp.simplify(a_solution)))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and knowns['v']:
             a_solution = sp.solve(eq3, a)
             solved_expression = a_solution[0] if isinstance(a_solution, list) else a_solution
-            st.latex(sp.latex(sp.simplify(solved_expression)))
+            st.latex(sp.latex(sp.simplify(a_solution)))
             equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE3.jpg?raw=true"
     
@@ -140,10 +140,8 @@ if st.button("Show Suggested Equation"):
     # Additional input for numerical evaluation
     st.subheader("Enter values to solve the equation:")
     value_inputs = {}
-    for symbol in [x, v0, v, a, t]:
-        if symbol != solving_for and (symbol != v0 or condition != "Object starts at rest (v0 = 0)") \
-                and (symbol != v or condition != "Object stops (v = 0)") \
-                and (symbol != a or condition != "Constant velocity (a = 0)"):
+    for symbol, checkbox in knowns.items():
+        if symbol != solving_for and checkbox:
             value_inputs[symbol] = st.number_input(f"Enter value for {symbol}", step=1.0)
     
     if st.button("Calculate Solution"):
