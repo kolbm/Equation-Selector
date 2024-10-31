@@ -6,7 +6,7 @@ x, v0, v, a, t = sp.symbols('x v0 v a t')
 
 # Define kinematic equations with x0 set to 0
 eq1 = sp.Eq(v, v0 + a * t)  # v = v0 + a * t
-eq2 = sp.Eq(x, v0 * t + 0.5 * a * t**2)  # x = v0 * t + 0.5 * a * t^2
+eq2 = sp.Eq(x, v0 * t + sp.Rational(1, 2) * a * t**2)  # x = v0 * t + 0.5 * a * t^2
 eq3 = sp.Eq(v**2, v0**2 + 2 * a * x)  # v^2 = v_0^2 + 2a * x
 
 # Display title and logo
@@ -62,60 +62,60 @@ if st.button("Show Suggested Equation"):
 
     if solving_for == 'Displacement (x)':
         if knowns['v0'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            x_solution = sp.simplify(sp.solve(eq2, x, rational=True)[0])
+            x_solution = sp.simplify(sp.solve(eq2, x)[0])
             st.latex(sp.latex(x_solution))
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE2.jpg?raw=true"
         elif knowns['v0'] and knowns['v'] and knowns['a']:
-            x_solution = sp.simplify(sp.solve(eq3, x, rational=True)[0])
+            x_solution = sp.simplify(sp.solve(eq3, x)[0])
             st.latex(sp.latex(x_solution))
             equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE3.jpg?raw=true"
     
     elif solving_for == 'Initial velocity (v0)':
         if knowns['v'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            v0_solution = sp.simplify(sp.solve(eq1, v0, rational=True)[0])
+            v0_solution = sp.simplify(sp.solve(eq1, v0)[0])
             st.latex(sp.latex(v0_solution))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v'] and knowns['x'] and knowns['a']:
-            v0_solution = sp.simplify(sp.solve(eq3, v0, rational=True)[0])
+            v0_solution = sp.simplify(sp.solve(eq3, v0)[0])
             st.latex(sp.latex(v0_solution))
             equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE3.jpg?raw=true"
     
     elif solving_for == 'Final velocity (v)':
         if knowns['v0'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            v_solution = sp.simplify(sp.solve(eq1, v, rational=True)[0])
+            v_solution = sp.simplify(sp.solve(eq1, v)[0])
             st.latex(sp.latex(v_solution))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and knowns['a']:
-            v_solution = sp.simplify(sp.solve(eq3, v, rational=True)[0])
+            v_solution = sp.simplify(sp.solve(eq3, v)[0])
             st.latex(sp.latex(v_solution))
             equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE3.jpg?raw=true"
     
     elif solving_for == 'Acceleration (a)':
         if knowns['v0'] and knowns['t'] and knowns['v'] and condition != "Constant velocity (a = 0)":
-            a_solution = sp.simplify(sp.solve(eq1, a, rational=True)[0])
+            a_solution = sp.simplify(sp.solve(eq1, a)[0])
             st.latex(sp.latex(a_solution))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and knowns['v']:
-            a_solution = sp.simplify(sp.solve(eq3, a, rational=True)[0])
+            a_solution = sp.simplify(sp.solve(eq3, a)[0])
             st.latex(sp.latex(a_solution))
             equation_label = "Equation 3: \( v^2 = v_0^2 + 2a x \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE3.jpg?raw=true"
     
     elif solving_for == 'Time (t)':
         if knowns['v0'] and knowns['a'] and knowns['v'] and condition != "Constant velocity (a = 0)":
-            t_solution = sp.simplify(sp.solve(eq1, t, rational=True)[0])
+            t_solution = sp.simplify(sp.solve(eq1, t)[0])
             st.latex(sp.latex(t_solution))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            t_solution = sp.simplify(sp.solve(eq2, t, rational=True))
+            t_solution = sp.simplify(sp.solve(eq2, t))
             st.latex(sp.latex(t_solution[0] if isinstance(t_solution, list) else t_solution))
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE2.jpg?raw=true"
