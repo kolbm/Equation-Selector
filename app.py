@@ -24,16 +24,22 @@ t_input = st.checkbox("Time (t)")
 st.subheader("Select special condition (if applicable):")
 condition = st.selectbox("Choose one:", ["N/A", "Object starts at rest (v0 = 0)", "Object stops (v = 0)", "Constant velocity (a = 0)"])
 
-# Adjust known values based on the selected condition
+# Apply conditions to known values and substitute zero where applicable
 if condition == "Object starts at rest (v0 = 0)":
     v0_input = True
-    v0 = 0
+    eq1 = eq1.subs(v0, 0)
+    eq2 = eq2.subs(v0, 0)
+    eq3 = eq3.subs(v0, 0)
 elif condition == "Object stops (v = 0)":
     v_input = True
-    v = 0
+    eq1 = eq1.subs(v, 0)
+    eq2 = eq2.subs(v, 0)
+    eq3 = eq3.subs(v, 0)
 elif condition == "Constant velocity (a = 0)":
     a_input = True
-    a = 0
+    eq1 = eq1.subs(a, 0)
+    eq2 = eq2.subs(a, 0)
+    eq3 = eq3.subs(a, 0)
 
 # Store known variables in a dictionary
 knowns = {
@@ -57,7 +63,8 @@ if st.button("Show Suggested Equation"):
 
     if solving_for == 'Displacement (x)':
         if knowns['v0'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            st.latex(sp.latex(eq2.subs(a, 0) if condition == "Constant velocity (a = 0)" else eq2))
+            x_solution = eq2 if condition == "Constant velocity (a = 0)" else eq2
+            st.latex(sp.latex(sp.simplify(x_solution)))
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE2.jpg?raw=true"
         elif knowns['v0'] and knowns['v'] and knowns['a']:
@@ -68,7 +75,7 @@ if st.button("Show Suggested Equation"):
     
     elif solving_for == 'Initial velocity (v0)':
         if knowns['v'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            v0_solution = sp.solve(eq1.subs(a, 0) if condition == "Constant velocity (a = 0)" else eq1, v0)[0]
+            v0_solution = sp.solve(eq1, v0)[0]
             st.latex(sp.latex(sp.simplify(v0_solution)))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
@@ -80,7 +87,7 @@ if st.button("Show Suggested Equation"):
     
     elif solving_for == 'Final velocity (v)':
         if knowns['v0'] and knowns['t'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            st.latex(sp.latex(eq1.subs(a, 0) if condition == "Constant velocity (a = 0)" else eq1))
+            st.latex(sp.latex(sp.simplify(eq1)))
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and knowns['a']:
@@ -108,7 +115,7 @@ if st.button("Show Suggested Equation"):
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and (knowns['a'] or condition == "Constant velocity (a = 0)"):
-            t_solution = sp.solve(eq2.subs(a, 0) if condition == "Constant velocity (a = 0)" else eq2, t)
+            t_solution = sp.solve(eq2, t)
             st.latex(sp.latex(sp.simplify(t_solution[0]) if isinstance(t_solution, list) else t_solution))
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE2.jpg?raw=true"
