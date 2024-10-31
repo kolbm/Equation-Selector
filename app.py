@@ -86,7 +86,7 @@ if st.button("Show Suggested Equation"):
             equation_label = "Equation 1: \( v = v_0 + a t \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE1.jpg?raw=true"
         elif knowns['v0'] and knowns['x'] and knowns['a']:
-            st.latex(sp.latex(sp.solve(eq2, t)))
+            st.latex(sp.latex(sp.solve(eq2, t)[0]))  # Display only the positive root if applicable
             equation_label = "Equation 2: \( x = v_0 t + 0.5 a t^2 \)"
             image_url = "https://github.com/kolbm/Equation-Selector/blob/main/KE2.jpg?raw=true"
 
