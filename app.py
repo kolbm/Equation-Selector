@@ -29,36 +29,42 @@ knowns = {
     't': t_input
 }
 
-# Ask what the student is solving for
+# Dropdown for the unknown variable
 st.subheader("What are you solving for?")
-solving_for = st.radio("Choose the unknown:", ["Displacement (x)", "Initial velocity (v0)", "Final velocity (v)", "Acceleration (a)", "Time (t)"])
+solving_for = st.selectbox("Choose the unknown:", ["Displacement (x)", "Initial velocity (v0)", "Final velocity (v)", "Acceleration (a)", "Time (t)"])
 
-# Determine which equation arrangement to suggest based on known values
-st.subheader("Suggested Equation:")
-if solving_for == 'Displacement (x)':
-    if knowns['v0'] and knowns['t'] and knowns['a']:
-        st.latex(sp.latex(eq2))
-    elif knowns['v0'] and knowns['v'] and knowns['a']:
-        st.latex(sp.latex(eq3))
-elif solving_for == 'Initial velocity (v0)':
-    if knowns['v'] and knowns['t'] and knowns['a']:
-        st.latex(sp.latex(eq1))
-    elif knowns['v'] and knowns['x'] and knowns['a']:
-        st.latex(sp.latex(eq3))
-elif solving_for == 'Final velocity (v)':
-    if knowns['v0'] and knowns['t'] and knowns['a']:
-        st.latex(sp.latex(eq1))
-    elif knowns['v0'] and knowns['x'] and knowns['a']:
-        st.latex(sp.latex(eq3))
-elif solving_for == 'Acceleration (a)':
-    if knowns['v0'] and knowns['t'] and knowns['v']:
-        st.latex(sp.latex(eq1))
-    elif knowns['v0'] and knowns['x'] and knowns['v']:
-        st.latex(sp.latex(eq3))
-elif solving_for == 'Time (t)':
-    if knowns['v0'] and knowns['a'] and knowns['v']:
-        st.latex(sp.latex(eq1))
-    elif knowns['v0'] and knowns['x'] and knowns['a']:
-        st.latex(sp.latex(eq2))
+# Button to trigger the equation selection
+if st.button("Show Suggested Equation"):
+    # Determine which equation arrangement to suggest based on known values
+    st.subheader("Suggested Equation:")
+    if solving_for == 'Displacement (x)':
+        if knowns['v0'] and knowns['t'] and knowns['a']:
+            st.latex(sp.latex(eq2))
+        elif knowns['v0'] and knowns['v'] and knowns['a']:
+            st.latex(sp.latex(eq3))
+    elif solving_for == 'Initial velocity (v0)':
+        if knowns['v'] and knowns['t'] and knowns['a']:
+            st.latex(sp.latex(eq1))
+        elif knowns['v'] and knowns['x'] and knowns['a']:
+            st.latex(sp.latex(eq3))
+    elif solving_for == 'Final velocity (v)':
+        if knowns['v0'] and knowns['t'] and knowns['a']:
+            st.latex(sp.latex(eq1))
+        elif knowns['v0'] and knowns['x'] and knowns['a']:
+            st.latex(sp.latex(eq3))
+    elif solving_for == 'Acceleration (a)':
+        if knowns['v0'] and knowns['t'] and knowns['v']:
+            st.latex(sp.latex(eq1))
+        elif knowns['v0'] and knowns['x'] and knowns['v']:
+            st.latex(sp.latex(eq3))
+    elif solving_for == 'Time (t)':
+        if knowns['v0'] and knowns['a'] and knowns['v']:
+            st.latex(sp.latex(eq1))
+        elif knowns['v0'] and knowns['x'] and knowns['a']:
+            st.latex(sp.latex(eq2))
 
-st.info("Use the suggested equation to solve for the unknown variable manually based on your known values.")
+    # Provide info if no equation is displayed due to missing inputs
+    if not (knowns['v0'] or knowns['v'] or knowns['a'] or knowns['t'] or knowns['x']):
+        st.warning("Please select at least two known values to suggest an equation.")
+else:
+    st.info("Click the button to show the suggested equation based on your inputs.")
